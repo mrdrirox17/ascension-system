@@ -1,0 +1,46 @@
+body {
+background: black;
+color: #00ff9c;
+font-family: monospace;
+text-align: center;
+}
+
+.card {
+background: #020617;
+margin: 15px;
+padding: 15px;
+border-radius: 12px;
+box-shadow: 0 0 15px #00ff9c;
+}
+
+button {
+background: black;
+color: #00ff9c;
+border: 1px solid #00ff9c;
+padding: 10px;
+margin: 5px;
+}
+
+#systemMsg {
+position: fixed;
+top: 40%;
+left: 50%;
+transform: translate(-50%, -50%);
+font-size: 28px;
+opacity: 0;
+color: #00ff9c;
+transition: 0.3s;
+}
+
+.xpbar {
+width: 80%;
+height: 10px;
+background: #111;
+margin: auto;
+}
+
+#xpfill {
+height: 100%;
+background: #00ff9c;
+width: 0%;
+}
