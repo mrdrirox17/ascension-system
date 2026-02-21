@@ -332,3 +332,27 @@ update();
 // init
 loadData();
 update();
+function exportSave(){
+
+let saveData = JSON.stringify(data);
+
+navigator.clipboard.writeText(saveData);
+
+showMsg("💾 SAUVEGARDE COPIÉE");
+}
+
+function importSave(){
+
+let input = prompt("Colle ta sauvegarde ici");
+
+if(!input) return;
+
+try{
+data = JSON.parse(input);
+save();
+update();
+showMsg("♻️ SAUVEGARDE RESTAURÉE");
+}catch{
+showMsg("❌ ERREUR");
+}
+}
