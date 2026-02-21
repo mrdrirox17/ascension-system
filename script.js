@@ -380,3 +380,11 @@ showMsg("♻️ SAUVEGARDE RESTAURÉE");
 showMsg("❌ ERREUR DE SAUVEGARDE");
 }
 }
+function applyAura(){
+
+document.body.className = ""; // reset
+
+let rank = getRank();
+
+document.body.classList.add("rank-" + rank);
+}
