@@ -356,3 +356,27 @@ showMsg("♻️ SAUVEGARDE RESTAURÉE");
 showMsg("❌ ERREUR");
 }
 }
+function exportSave(){
+
+let saveData = JSON.stringify(data);
+
+prompt("Copie ta sauvegarde :", saveData);
+
+showMsg("💾 SAUVEGARDE PRÊTE");
+}
+
+function importSave(){
+
+let input = prompt("Colle ta sauvegarde ici");
+
+if(!input) return;
+
+try{
+data = JSON.parse(input);
+save();
+update();
+showMsg("♻️ SAUVEGARDE RESTAURÉE");
+}catch{
+showMsg("❌ ERREUR DE SAUVEGARDE");
+}
+}
