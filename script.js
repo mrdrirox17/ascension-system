@@ -1,3 +1,12 @@
+function load(){
+let saved = localStorage.getItem("ascension");
+
+if(saved){
+data = JSON.parse(saved);
+}else{
+save();
+}
+}
 let data = JSON.parse(localStorage.getItem("ascension")) || {
 xp:0, level:1, streak:0,
 done:{},
@@ -266,4 +275,5 @@ return [
 
 setInterval(updateTime,60000);
 
+load();
 update();
