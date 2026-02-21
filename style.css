@@ -1,46 +1,53 @@
-body {
-background: black;
-color: #00ff9c;
-font-family: monospace;
-text-align: center;
-}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Ascension System</title>
+<link rel="stylesheet" href="style.css">
+</head>
 
-.card {
-background: #020617;
-margin: 15px;
-padding: 15px;
-border-radius: 12px;
-box-shadow: 0 0 15px #00ff9c;
-}
+<body>
 
-button {
-background: black;
-color: #00ff9c;
-border: 1px solid #00ff9c;
-padding: 10px;
-margin: 5px;
-}
+<h1>⚔️ ASCENSION SYSTEM</h1>
 
-#systemMsg {
-position: fixed;
-top: 40%;
-left: 50%;
-transform: translate(-50%, -50%);
-font-size: 28px;
-opacity: 0;
-color: #00ff9c;
-transition: 0.3s;
-}
+<div id="systemMsg"></div>
 
-.xpbar {
-width: 80%;
-height: 10px;
-background: #111;
-margin: auto;
-}
+<button onclick="startDay()">⚔️ Commencer la journée</button>
+<p id="timeLeft"></p>
 
-#xpfill {
-height: 100%;
-background: #00ff9c;
-width: 0%;
-}
+<div class="card">
+<h2 id="rank"></h2>
+<h3 id="level"></h3>
+<h3 id="title"></h3>
+
+<div class="xpbar"><div id="xpfill"></div></div>
+
+<p id="xp"></p>
+<p id="streak"></p>
+</div>
+
+<div class="card">
+<h3>🎯 Quêtes principales</h3>
+<div id="main"></div>
+
+<h3>🟣 Quêtes secondaires</h3>
+<div id="side"></div>
+
+<p id="urgent"></p>
+<p id="bossBox"></p>
+</div>
+
+<div class="card">
+<h3>⚡ Actions</h3>
+
+<button onclick="action('run')">Courir</button>
+<button onclick="action('steps')">10 000 pas</button>
+<button onclick="action('push')">Pompes</button>
+<button onclick="action('squat')">Squats</button>
+<button onclick="action('plank')">Gainage</button>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
