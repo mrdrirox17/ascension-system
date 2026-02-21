@@ -404,3 +404,25 @@ document.body.classList.add("danger");
 document.body.classList.remove("danger");
 }
 }
+function levelUp(){
+
+let need = 100 + data.level*80;
+
+if(data.xp >= need){
+data.xp -= need;
+data.level++;
+
+showMsg("🔥 LEVEL UP");
+
+let el = document.createElement("div");
+el.className = "levelup";
+el.innerText = "LEVEL UP";
+
+document.body.appendChild(el);
+
+setTimeout(()=>el.remove(),1000);
+
+document.body.classList.add("flash");
+setTimeout(()=>document.body.classList.remove("flash"),300);
+}
+}
