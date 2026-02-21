@@ -49,6 +49,13 @@ return arr.sort(()=>Math.random()-0.5);
 }
 
 function checkNewDay(){
+
+if(!data.lastDay){
+data.lastDay = today();
+save();
+return;
+}
+
 if(data.lastDay !== today()){
 resetDay();
 }
