@@ -1,9 +1,37 @@
-let data = JSON.parse(localStorage.getItem("ascension")) || {
-xp:0, level:1, streak:0,
-done:{}, sideToday:[], sideDone:[],
-startTime:null, lastDay:null,
-boss:null, urgent:null
+let data;
+
+function loadData(){
+let saved = localStorage.getItem("ascension");
+
+if(saved){
+try{
+data = JSON.parse(saved);
+}catch{
+data = null;
+}
+}
+
+if(!data){
+data = {
+xp:0,
+level:1,
+streak:0,
+done:{},
+sideToday:[],
+sideDone:[],
+startTime:null,
+lastDay:null,
+boss:null,
+urgent:null
 };
+save();
+  function save(){
+localStorage.setItem("ascension",JSON.stringify(data));
+}
+}
+}
+
+loadData();
 
 const sidePool = [
 "Marcher 30 min","Lire 10 pages","Apprendre 15 min",
