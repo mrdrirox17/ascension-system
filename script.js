@@ -388,3 +388,19 @@ let rank = getRank();
 
 document.body.classList.add("rank-" + rank);
 }
+function applyPressure(){
+
+if(!data.startTime) return;
+
+let now = new Date();
+let midnight = new Date();
+midnight.setHours(23,59,59,999);
+
+let diff = midnight - now;
+
+if(diff < 2 * 60 * 60 * 1000){ // moins de 2h
+document.body.classList.add("danger");
+}else{
+document.body.classList.remove("danger");
+}
+}
