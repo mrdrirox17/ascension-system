@@ -6,13 +6,32 @@ done:{},
 sideToday:[],
 sideDone:[],
 startTime:null,
-lastDay:null
+lastDay:null,
+boss:null,
+urgent:null,
+penalty:0
 };
 
 const sidePool = [
-"Marcher 30 min","Sortir","Apprendre 15 min",
-"Lire","Escaliers","Corde à sauter",
-"Footing","Planifier","Respiration"
+"Marcher 30 min","Sortir prendre l’air","Apprendre 15 min",
+"Lire 10 pages","Escaliers","Corde à sauter",
+"Footing léger","Planifier ta journée","Respiration",
+"Gainage bonus","Pompes bonus","Squats bonus"
+];
+
+const bosses = [
+"💀 5 km run",
+"💀 200 squats",
+"💀 150 pompes",
+"💀 20 min cardio",
+"💀 combo : run + gainage"
+];
+
+const urgents = [
+"⚡ 30 pompes maintenant",
+"⚡ 10 min marche",
+"⚡ 1 min gainage",
+"⚡ 40 squats"
 ];
 
 function save(){
@@ -23,17 +42,29 @@ function today(){
 return new Date().toDateString();
 }
 
-function resetDay(){
-data.done = {};
-data.sideDone = [];
-data.sideToday = shuffle(sidePool).slice(0,4);
-data.startTime = null;
-data.lastDay = today();
-save();
-}
-
 function shuffle(arr){
 return arr.sort(()=>Math.random()-0.5);
+}
+
+function resetDay(){
+
+// pénalité si rien fait
+if(Object.keys(data.done).length === 0){
+data.xp -= 50;
+data.streak = 0;
+data.penalty++;
+showMsg("💀 AUCUNE ACTION - PÉNALITÉ");
+}
+
+data.done = {};
+data.sideDone = [];
+data.sideToday = shuffle(sidePool).slice(0,5);
+data.startTime = null;
+data.lastDay = today();
+data.boss = null;
+data.urgent = null;
+
+save();
 }
 
 function checkNewDay(){
@@ -42,7 +73,6 @@ data.lastDay = today();
 save();
 return;
 }
-
 if(data.lastDay !== today()){
 resetDay();
 }
@@ -64,15 +94,17 @@ setTimeout(()=>el.style.opacity=0,2000);
 function action(type){
 
 if(data.done[type]){
-showMsg("Déjà fait");
+showMsg("Déjà validé");
 return;
 }
 
+let xp = 80 + data.level*5;
+
 data.done[type]=true;
-data.xp+=80;
+data.xp+=xp;
 data.streak++;
 
-showMsg("MISSION ACCOMPLIE");
+showMsg("MISSION VALIDÉE");
 
 levelUp();
 save();
@@ -89,19 +121,31 @@ return;
 data.sideDone.push(i);
 data.xp+=40;
 
-showMsg("QUÊTE VALIDÉE");
-
 save();
 update();
 }
 
-function levelUp(){
-let need=100+data.level*50;
+function spawnBoss(){
+if(!data.boss && Math.random()<0.3){
+data.boss = bosses[Math.floor(Math.random()*bosses.length)];
+showMsg("👑 BOSS APPARU");
+}
+}
 
-if(data.xp>=need){
-data.xp-=need;
+function spawnUrgent(){
+if(!data.urgent && Math.random()<0.4){
+data.urgent = urgents[Math.floor(Math.random()*urgents.length)];
+showMsg("⚡ URGENCE");
+}
+}
+
+function levelUp(){
+let need = 100 + data.level*80;
+
+if(data.xp >= need){
+data.xp -= need;
 data.level++;
-showMsg("LEVEL UP");
+showMsg("🔥 LEVEL UP");
 }
 }
 
@@ -122,7 +166,23 @@ let h=Math.floor(diff/3600000);
 let m=Math.floor((diff%3600000)/60000);
 
 document.getElementById("timeLeft").innerText=
-"Temps restant : "+h+"h "+m+"m";
+"⏱️ "+h+"h "+m+"m restantes";
+}
+
+function getRank(){
+if(data.level<10)return"E";
+if(data.level<20)return"D";
+if(data.level<35)return"C";
+if(data.level<50)return"B";
+if(data.level<80)return"A";
+return"S";
+}
+
+function getTitle(){
+return [
+"Recrue","Garde","Chevalier",
+"Vétéran","Seigneur","Monarque","Empereur"
+][Math.floor(data.level/5)]||"Transcendant";
 }
 
 function update(){
@@ -130,21 +190,30 @@ function update(){
 checkNewDay();
 
 if(!data.sideToday || data.sideToday.length===0){
-data.sideToday = shuffle(sidePool).slice(0,4);
+data.sideToday = shuffle(sidePool).slice(0,5);
 save();
 }
 
+spawnBoss();
+spawnUrgent();
+
+document.getElementById("rank").innerText="Rang : "+getRank();
 document.getElementById("level").innerText="Niveau "+data.level;
+document.getElementById("title").innerText="Titre : "+getTitle();
+
 document.getElementById("xp").innerText="XP "+data.xp;
 document.getElementById("streak").innerText="Streak "+data.streak;
+
+document.getElementById("xpfill").style.width=
+(data.xp/(100+data.level*80)*100)+"%";
 
 let main=document.getElementById("main");
 
 main.innerHTML=`
-${data.done.run?"✔️":"❌"} Courir<br>
+${data.done.run?"✔️":"❌"} Courir ${2+Math.floor(data.level/5)} km<br>
 ${data.done.steps?"✔️":"❌"} 10 000 pas<br>
-${data.done.push?"✔️":"❌"} Pompes<br>
-${data.done.squat?"✔️":"❌"} Squats<br>
+${data.done.push?"✔️":"❌"} 100 pompes<br>
+${data.done.squat?"✔️":"❌"} 100 squats<br>
 ${data.done.plank?"✔️":"❌"} Gainage
 `;
 
@@ -162,6 +231,12 @@ btn.onclick=()=>completeSide(i);
 side.appendChild(btn);
 side.appendChild(document.createElement("br"));
 });
+
+document.getElementById("urgent").innerText=
+data.urgent ? data.urgent : "";
+
+document.getElementById("bossBox").innerText=
+data.boss ? data.boss : "";
 
 updateTime();
 }
