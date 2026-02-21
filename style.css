@@ -66,3 +66,41 @@ height: 100%;
 background: #00ff9c;
 width: 0%;
 }
+/* ===== AURA ===== */
+body.rank-E { background: radial-gradient(circle, #001f0f, black); }
+body.rank-D { background: radial-gradient(circle, #001f3f, black); }
+body.rank-C { background: radial-gradient(circle, #2b0040, black); }
+body.rank-B { background: radial-gradient(circle, #3f0000, black); }
+body.rank-A { background: radial-gradient(circle, #3f3f00, black); }
+body.rank-S { background: radial-gradient(circle, #ffffff, #000000); }
+
+/* ===== FLASH ANIME ===== */
+.flash {
+animation: flash 0.3s;
+}
+
+@keyframes flash {
+0% { background: white; }
+100% { background: black; }
+}
+
+/* ===== PRESSION ===== */
+body.danger {
+background: radial-gradient(circle, darkred, black);
+}
+
+/* ===== LEVEL UP ===== */
+.levelup {
+position: fixed;
+top: 40%;
+left: 50%;
+transform: translate(-50%, -50%);
+font-size: 40px;
+color: gold;
+animation: pop 1s ease;
+}
+
+@keyframes pop {
+0% { transform: scale(0.5); opacity:0; }
+100% { transform: scale(1); opacity:1; }
+}
